@@ -38,6 +38,27 @@ const addPlace = async (req, res, next) => {
   }
 }
 
+const findPlaces = async (req, res, next) => {
+  try {
+    console.log(req.query)
+    const center = req.query.center.split(',').map((coor) => Number(coor)) // [lat,lng]
+    const radius = Number(req.query.radius)
 
-module.exports = { addPlace
+    const places = await PlaceModel.find({
+      coordinates: {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: center
+          },
+          $maxDistance: radius
+        }
+      }
+    })
+    res.status(200).json({ matches: places })
+  } catch (error) {
+    next(error)
+  }
 }
+
+module.exports = { addPlace, findPlaces }
