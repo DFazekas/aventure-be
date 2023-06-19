@@ -1,4 +1,5 @@
 const PlaceModel = require('./model')
+const { fetchPlacesFromGoogleMaps } = require('./services')
 
 const addPlace = async (req, res, next) => {
   try {
@@ -30,9 +31,33 @@ const addPlace = async (req, res, next) => {
         vicinity: originalObject.vicinity
       }
     }
-
     const place = await PlaceModel.create(convertedObject)
     res.status(201).json(place)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const getAllPlacesByCityAndType = async (req, res, next) => {
+  try {
+    const originalObject = req.body
+    const { city, type } = req.query
+
+
+    const places = await PlaceModel.find({
+      'properties.types': type,
+      'properties.vicinity': city
+    }).exec()
+
+    if (places.length > 0) {
+      res.status(200).json({ updated: false, matches: places })
+      return
+    }
+
+    // Fetch data from Google Places API since it doesn't exist or is expired.
+    const fetchedPlaces = await fetchPlacesFromGoogleMaps(city, type)
+
+    res.status(200).json({ updated: true, matches: fetchedPlaces })
   } catch (error) {
     next(error)
   }
@@ -61,4 +86,7 @@ const findPlaces = async (req, res, next) => {
   }
 }
 
-module.exports = { addPlace, findPlaces }
+module.exports = {
+  addPlace,
+  getAllPlacesByCityAndType
+}
