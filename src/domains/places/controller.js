@@ -1,3 +1,4 @@
+const { validatePlaceType } = require('./validators')
 const PlaceModel = require('./model')
 const { fetchPlacesFromGoogleMaps } = require('./services')
 
@@ -43,6 +44,7 @@ const getAllPlacesByCityAndType = async (req, res, next) => {
     const originalObject = req.body
     const { city, type } = req.query
 
+    validatePlaceType(type)
 
     const places = await PlaceModel.find({
       'properties.types': type,
