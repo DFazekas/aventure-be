@@ -63,24 +63,17 @@ const getAllPlacesByCityAndType = async (req, res, next) => {
   }
 }
 
-const findPlaces = async (req, res, next) => {
+const getPlaceById = async (req, res, next) => {
   try {
-    console.log(req.query)
-    const center = req.query.center.split(',').map((coor) => Number(coor)) // [lat,lng]
-    const radius = Number(req.query.radius)
+    const placeId = req.params.id
+    const place = await PlaceModel.findById(placeId).exec()
 
-    const places = await PlaceModel.find({
-      coordinates: {
-        $near: {
-          $geometry: {
-            type: 'Point',
-            coordinates: center
-          },
-          $maxDistance: radius
-        }
-      }
-    })
-    res.status(200).json({ matches: places })
+    if (!place) {
+      res.status(404).json({ message: 'Place not found' })
+      return
+    }
+
+    res.status(200).json(place)
   } catch (error) {
     next(error)
   }
@@ -88,5 +81,6 @@ const findPlaces = async (req, res, next) => {
 
 module.exports = {
   addPlace,
-  getAllPlacesByCityAndType
+  getAllPlacesByCityAndType,
+  getPlaceById
 }
