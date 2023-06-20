@@ -6,53 +6,59 @@ const itinerarySchema = new mongoose.Schema(
     notes: String
   },
   {
-    _id: false, // Disable automatic generation of _id,
+    _id: false, // Disable automatic generation of _id
     discriminatorKey: 'itinerary_type'
   }
 )
 
-const travelSchema = new mongoose.Schema({
-  travel_method: String,
-  duration: {
-    type: {
-      start: Date,
-      end: Date
+const travelSchema = new mongoose.Schema(
+  {
+    travel_method: String,
+    duration: {
+      type: {
+        start: Date,
+        end: Date
+      },
+      _id: false // Disable automatic generation of _id
     },
-    _id: false // Disable automatic generation of _id
-  },
-  formatted_duration: String,
-  distance_km: Number,
-  cost_dollars: Number,
-  origin: {
-    type: {
-      lat: Number,
-      lng: Number
+    formatted_duration: String,
+    distance_km: Number,
+    cost_dollars: Number,
+    origin: {
+      type: {
+        lat: Number,
+        lng: Number
+      },
+      _id: false // Disable automatic generation of _id
     },
-    _id: false // Disable automatic generation of _id
-  },
-  destination: {
-    type: {
-      lat: Number,
-      lng: Number
+    destination: {
+      type: {
+        lat: Number,
+        lng: Number
+      },
+      _id: false // Disable automatic generation of _id
     },
-    _id: false // Disable automatic generation of _id
+    party_size: Number
   },
-  party_size: Number
-})
-const placeSchema = new mongoose.Schema({
-  place_type: String,
-  place_id: String,
-  duration: {
-    type: {
-      start: Date,
-      end: Date
+  { _id: false }
+)
+const placeSchema = new mongoose.Schema(
+  {
+    place_type: String,
+    place_id: String,
+    duration: {
+      type: {
+        start: Date,
+        end: Date
+      },
+      _id: false // Disable automatic generation of _id
     },
-    _id: false // Disable automatic generation of _id
+    formatted_duration: String,
+    cost_dollars: Number,
+    party_size: Number
   },
-  formatted_duration: String,
-  cost_dollars: Number,
-  party_size: Number
-})
+  { _id: false }
+)
 
 const ItineraryModel = new mongoose.model('Itinerary', itinerarySchema)
 const TravelModel = ItineraryModel.discriminator('Travel', travelSchema)
