@@ -1,6 +1,9 @@
 const { validatePlaceType } = require('./validators')
 const PlaceModel = require('./model')
-const { fetchPlacesFromGoogleMaps } = require('./services')
+const {
+  fetchPlacesFromGoogleMaps,
+  fetchPlaceDetailsFromGoogleMaps
+} = require('./services')
 
 const addPlace = async (req, res, next) => {
   try {
@@ -41,7 +44,6 @@ const addPlace = async (req, res, next) => {
 
 const getAllPlacesByCityAndType = async (req, res, next) => {
   try {
-    const originalObject = req.body
     const { city, type } = req.query
 
     validatePlaceType(type)
@@ -57,9 +59,15 @@ const getAllPlacesByCityAndType = async (req, res, next) => {
     }
 
     // Fetch data from Google Places API since it doesn't exist or is expired.
-    const fetchedPlaces = await fetchPlacesFromGoogleMaps(city, type)
+    //FIXME: This only fetches the first page of results. Need to fetch all pages.
+    const fetchedLowResPlaces = await fetchPlacesFromGoogleMaps(city, type)
+    const placeDetailsPromises = fetchedLowResPlaces.map((place) =>
+      fetchPlaceDetailsFromGoogleMaps(place.place_id, city)
+    )
+    const fetchedHighResPlaces = await Promise.all(placeDetailsPromises)
 
-    res.status(200).json({ updated: true, matches: fetchedPlaces })
+    await PlaceModel.create(fetchedHighResPlaces)
+    res.status(201).json({ updated: true, matches: fetchedHighResPlaces })
   } catch (error) {
     next(error)
   }

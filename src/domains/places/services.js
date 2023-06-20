@@ -15,32 +15,30 @@ const fetchPlacesFromGoogleMaps = async (city, type, radius = 100) => {
       }
     )
 
-    const results = response.data.results
-
-    const places = results.map(async (place) => {
-      const placeId = place.place_id
-
-      // Check if the place exists in the database.
-      const existingPlace = await PlaceModel.findOne({
-        place_id: placeId
-      }).exec()
-
-      if (existingPlace) {
-        existingPlace.expiry_time =
-          new Date().getTime() + 30 * 24 * 60 * 60 * 1000 // Update the expiry time to 30 days from the current time
-        return await existingPlace.save()
-      }
-
-      // Create new database entry.
-      const newPlace = new PlaceModel.new(place, city)
-      return await newPlace.save()
-    })
-
-    return await Promise.all(places)
+    const places = response.data.results
+    return places
   } catch (error) {
     console.error(error)
-    throw new Error('Failed to fetch places from Google Maps:')
+    throw new Error('Failed to fetch places from Google Maps.')
   }
 }
 
-module.exports = { fetchPlacesFromGoogleMaps }
+const fetchPlaceDetailsFromGoogleMaps = async (placeId, city) => {
+  try {
+    const place = await axios.get(
+      'https://maps.googleapis.com/maps/api/place/details/json',
+      {
+        params: {
+          place_id: placeId,
+          key: process.env.GOOGLE_MAPS_API_KEY
+        }
+      }
+    )
+    return new PlaceModel.new(place.data.result, city)
+  } catch (error) {
+    console.error(error)
+    throw new Error('Failed to fetch place details from Google Maps.')
+  }
+}
+
+module.exports = { fetchPlacesFromGoogleMaps, fetchPlaceDetailsFromGoogleMaps }

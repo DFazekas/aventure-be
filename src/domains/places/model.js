@@ -1,5 +1,16 @@
 const mongoose = require('mongoose')
 
+const HoursOfOperationsSchema = new mongoose.Schema({
+  close: {
+    day: { type: Number, required: true },
+    time: { type: String, required: true }
+  },
+  open: {
+    day: { type: Number, required: true },
+    time: { type: String, required: true }
+  }
+})
+
 const placeSchema = new mongoose.Schema({
   type: {
     type: String,
@@ -11,8 +22,10 @@ const placeSchema = new mongoose.Schema({
     required: true
   },
   properties: {
-    business_status: String,
+    business_status: { type: String, required: true },
+    curbside_pickup: Boolean,
     formatted_address: String,
+    formatted_phone_number: String,
     viewport: {
       northeast: {
         lat: String,
@@ -32,9 +45,10 @@ const placeSchema = new mongoose.Schema({
       compound_code: String,
       global_code: String
     },
-    name: String,
+    name: { type: String, required: true },
     opening_hours: {
-      open_now: Boolean
+      periods: [HoursOfOperationsSchema],
+      weekday_text: [String]
     },
     photos: [
       {
@@ -44,15 +58,21 @@ const placeSchema = new mongoose.Schema({
         width: Number
       }
     ],
-    place_id: String,
+    delivery: Boolean,
+    dine_in: Boolean,
+    price_level: Number,
+    reservable: Boolean,
+    place_id: { type: String, required: true },
     rating: Number,
     reference: String,
     scope: String,
-    types: [String],
+    types: { type: [String], required: true },
+    website: String,
     user_ratings_total: Number,
-    vicinity: String
+    vicinity: { type: String, required: true },
+    wheelchair_accessible_entrance: Boolean
   },
-  expiry_time: Date
+  expiry_time: { type: Date, required: true }
 })
 
 placeSchema.statics.new = function (place, city) {
@@ -72,10 +92,14 @@ placeSchema.statics.new = function (place, city) {
       },
       plus_code: place.plus_code,
       name: place.name,
-      opening_hours: {
-        open_now: place.opening_hours?.open_now
-      },
+      opening_hours: place.opening_hours,
       photos: place.photos,
+      delivery: place.delivery,
+      dine_in: place.dine_in,
+      price_level: place.price_level,
+      reservable: place.reservable,
+      website: place.website,
+      wheelchair_accessible_entrance: place.wheelchair_accessible_entrance,
       place_id: place.place_id,
       rating: place.rating,
       reference: place.reference,
