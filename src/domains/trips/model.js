@@ -10,56 +10,62 @@ const durationSchema = new Schema(
   { _id: false }
 )
 
-const coordinateSchema = new Schema({
-  lat: { type: Number, required: true },
-  lng: { type: Number, required: true }
-})
-
-const itinerarySchema = new Schema(
+const activitySchema = new Schema(
   {
-    itinerary_type: { type: String },
-    notes: { type: String }
+    type: { type: String, required: true },
+    notes: { type: String, default: '' },
+    duration: { type: durationSchema, required: true },
+    party_size: { type: Number, required: true },
+    cost_dollar: { type: Number, required: true }
   },
   {
-    _id: false, // Disable automatic generation of _id
-    discriminatorKey: 'itinerary_type'
+    discriminatorKey: 'type',
+    _id: false
   }
 )
 
 const travelSchema = new Schema(
   {
     travel_method: { type: String, required: true },
-    duration: { type: durationSchema, required: true },
-    distance_km: { type: Number, required: true },
-    cost_dollars: { type: Number, required: true },
-    origin: { type: coordinateSchema, required: true },
-    destination: { type: coordinateSchema, required: true },
-    party_size: { type: Number, required: true }
-  },
+    path: {
+      type: {
+        distance_km: { type: Number, required: true },
+        origin: { type: coordinateSchema, required: true },
+        destination: { type: coordinateSchema, required: true }
+      },
+      required: true,
+      _id: false
+    }
+  }, 
   { _id: false }
 )
 const placeSchema = new Schema(
   {
     place_type: { type: String, required: true },
-    place_id: { type: String, required: true },
-    duration: {
-      type: durationSchema,
-      required: true
-    },
-    cost_dollars: { type: Number, required: true },
-    party_size: { type: Number, required: true }
+    place_id: { type: String, required: true }
   },
   { _id: false }
 )
 
-const ItineraryModel = new mongoose.model('Itinerary', itinerarySchema)
-const TravelModel = ItineraryModel.discriminator('Travel', travelSchema)
-const PlaceModel = ItineraryModel.discriminator('Place', placeSchema)
+const itinerarySchema = new Schema({
+  date: { type: Date, required: true },
+  activities: {
+    type: [activitySchema],
+    required: true
+  }
+})
+const coordinateSchema = new Schema({
+  lat: { type: Number },
+  lng: { type: Number }
+})
+const ActivityModel = mongoose.model('Activity', activitySchema)
+const TravelModel = ActivityModel.discriminator('Travel', travelSchema)
+const PlaceModel = ActivityModel.discriminator('Place', placeSchema)
 
 const tripSchema = new Schema({
   name: { type: String, required: true },
-  description: String,
-  date: { type: Date, required: true },
+  description: { type: String },
+  duration: { type: durationSchema, required: true },
   metadata: {
     city: { type: String, required: true },
     travel_methods: { type: [String], required: true },
