@@ -24,29 +24,6 @@ const activitySchema = new Schema(
   }
 )
 
-const travelSchema = new Schema(
-  {
-    travel_method: { type: String, required: true },
-    path: {
-      type: {
-        distance_km: { type: Number, required: true },
-        origin: { type: coordinateSchema, required: true },
-        destination: { type: coordinateSchema, required: true }
-      },
-      required: true,
-      _id: false
-    }
-  }, 
-  { _id: false }
-)
-const placeSchema = new Schema(
-  {
-    place_type: { type: String, required: true },
-    place_id: { type: String, required: true }
-  },
-  { _id: false }
-)
-
 const itinerarySchema = new Schema({
   date: { type: Date, required: true },
   activities: {
@@ -58,9 +35,6 @@ const coordinateSchema = new Schema({
   lat: { type: Number },
   lng: { type: Number }
 })
-const ActivityModel = mongoose.model('Activity', activitySchema)
-const TravelModel = ActivityModel.discriminator('Travel', travelSchema)
-const PlaceModel = ActivityModel.discriminator('Place', placeSchema)
 
 const tripSchema = new Schema({
   name: { type: String, required: true },
@@ -87,5 +61,28 @@ const tripSchema = new Schema({
 })
 
 const TripModel = mongoose.model('Trip', tripSchema)
+const ActivityModel = mongoose.model('Activity', activitySchema)
+const TravelModel = ActivityModel.discriminator(
+  'Travel',
+  new Schema({
+    travel_method: { type: String, required: true },
+    path: {
+      type: {
+        distance_km: { type: Number, required: true },
+        origin: { type: coordinateSchema, required: true },
+        destination: { type: coordinateSchema, required: true }
+      },
+      required: true,
+      _id: false
+    }
+  })
+)
+const PlaceModel = ActivityModel.discriminator(
+  'Place',
+  new Schema({
+    place_type: { type: String, required: true },
+    place_id: { type: String, required: true }
+  })
+)
 
 module.exports = { TripModel, PlaceModel, TravelModel }
