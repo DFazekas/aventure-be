@@ -2,12 +2,17 @@ const mongoose = require('mongoose')
 
 const HoursOfOperationsSchema = new mongoose.Schema({
   close: {
-    day: { type: Number, required: true },
-    time: { type: String, required: true }
+    type: {
+      day: { type: Number, required: true },
+      time: { type: String, required: true }
+    }
   },
   open: {
-    day: { type: Number, required: true },
-    time: { type: String, required: true }
+    type: {
+      day: { type: Number, required: true },
+      time: { type: String, required: true }
+    },
+    required: true
   }
 })
 
@@ -22,7 +27,7 @@ const placeSchema = new mongoose.Schema({
     required: true
   },
   properties: {
-    business_status: { type: String, required: true },
+    business_status: { type: String },
     curbside_pickup: Boolean,
     formatted_address: String,
     formatted_phone_number: String,

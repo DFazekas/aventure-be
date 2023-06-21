@@ -9,6 +9,7 @@ const fetchPlacesFromGoogleMaps = async (city, type, radius = 100) => {
       {
         params: {
           query: `${type} in ${city}`,
+          type: type,
           radius: radius,
           key: apiKey
         }
