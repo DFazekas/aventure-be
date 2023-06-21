@@ -4,14 +4,32 @@ const createTrip = async (req, res, next) => {
   try {
     const data = req.body
 
-    const itinerary = data.itinerary.map((item) => {
-      if (item.itinerary_type === 'Travel') {
-        return new TravelModel(item)
-      } else if (item.itinerary_type === 'Place') {
-        return new PlaceModel(item)
-      } else {
-        throw new Error(`Unknown itinerary type: ${item.type}`)
-      }
+    const tripDuration = req.body.duration
+    tripDuration.formatted_duration = '15 mins' //FIXME - calculate this.
+
+    const itinerary = Object.keys(req.body.itinerary).map((date) => {
+      const activities = data.itinerary[date].map((activity) => {
+        const activityFormattedDuration = '15 mins' //FIXME - calculate this.
+        const duration = {
+          ...activity.duration,
+          formatted_duration: activityFormattedDuration
+        }
+
+        const type = activity.type
+        if (type === 'Travel') {
+          return new TravelModel({
+            ...activity,
+            duration,
+            travel_method: activity.travel_method
+          })
+        } else if (type === 'Point') {
+          return new PlaceModel({ ...activity, duration })
+        } else {
+          throw new Error(`Unknown itinerary type: ${activity.type}`)
+        }
+      })
+
+      return { date, activities }
     })
 
     const trip = new TripModel({ ...data, itinerary })
