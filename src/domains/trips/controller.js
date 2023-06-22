@@ -43,7 +43,12 @@ const createTrip = async (req, res, next) => {
 
 const getTrips = async (req, res, next) => {
   try {
-    const trips = await TripModel.find().limit(10).exec()
+    const { type } = req.query
+    const trips = await TripModel.find({
+      'metadata.tags': type
+    })
+      .limit(10)
+      .exec()
     res.status(200).json(trips)
   } catch (error) {
     next(error)
