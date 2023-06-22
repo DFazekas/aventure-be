@@ -41,4 +41,13 @@ const createTrip = async (req, res, next) => {
   }
 }
 
-module.exports = { createTrip }
+const getTrips = async (req, res, next) => {
+  try {
+    const trips = await TripModel.find().limit(10).exec()
+    res.status(200).json(trips)
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { createTrip, getTrips }
