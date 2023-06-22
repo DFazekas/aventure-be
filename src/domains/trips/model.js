@@ -42,6 +42,7 @@ const tripSchema = new Schema({
   duration: { type: durationSchema, required: true },
   metadata: {
     city: { type: String, required: true },
+    country: { type: String, required: true },
     travel_methods: { type: [String], required: true },
     party_sizes: {
       type: {

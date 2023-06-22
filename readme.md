@@ -25,6 +25,7 @@ GET /trips
   {
     "metadata": {
       "city": "Grimsby",
+      "country": "Canada",
       "travel_methods": ["Uber"],
       "party_sizes": {
         "min": 2,
@@ -124,6 +125,7 @@ Body:
   },
   "metadata": {
     "city": "Grimsby",
+    "country": "Canada",
     "travel_methods": ["Uber"],
     "party_sizes": {
       "min": 2,
