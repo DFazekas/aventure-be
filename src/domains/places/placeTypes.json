@@ -1,0 +1,15 @@
+[
+  { "name": "Amusement Park", "value": "amusement_park" },
+  { "name": "Aquarium", "value": "aquarium" },
+  { "name": "Art Gallery", "value": "art_gallery" },
+  { "name": "Bowling Alley", "value": "bowling_alley" },
+  { "name": "Cafe", "value": "cafe" },
+  { "name": "Camp Ground", "value": "camp_ground" },
+  { "name": "Casino", "value": "casino" },
+  { "name": "Movie Theater", "value": "movie_theater" },
+  { "name": "Museum", "value": "museum" },
+  { "name": "Night Club", "value": "night_club" },
+  { "name": "Park", "value": "park" },
+  { "name": "Restaurant", "value": "restaurant" },
+  { "name": "Zoo", "value": "zoo" }
+]

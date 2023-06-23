@@ -4,6 +4,7 @@ const {
   fetchPlacesFromGoogleMaps,
   fetchPlaceDetailsFromGoogleMaps
 } = require('./services')
+const placeTypes = require('./placeTypes.json')
 
 const addPlace = async (req, res, next) => {
   try {
@@ -89,8 +90,17 @@ const getPlaceById = async (req, res, next) => {
   }
 }
 
+const getPlaceTypes = async (req, res, next) => {
+  try {
+    res.status(200).json(placeTypes)
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   addPlace,
   getAllPlacesByCityAndType,
-  getPlaceById
+  getPlaceById,
+  getPlaceTypes
 }

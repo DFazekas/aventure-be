@@ -1,22 +1,13 @@
+const placeTypes = require('./placeTypes.json')
 const validatePlaceType = (type) => {
-  const validTypes = [
-    'amusement_park',
-    'aquarium',
-    'art_gallery',
-    'bowling_alley',
-    'cafe',
-    'campground',
-    'casino',
-    'movie_theater',
-    'museum',
-    'night_club',
-    'park',
-    'restaurant',
-    'tourist_attraction',
-    'zoo'
-  ]
+  let hasError = true
+  placeTypes.forEach((placeType) => {
+    if (placeType.value === type) {
+      hasError = false
+    }
+  })
 
-  if (!validTypes.includes(type)) {
+  if (hasError) {
     throw new Error(`Unsupported place type (${type})`)
   }
 }
