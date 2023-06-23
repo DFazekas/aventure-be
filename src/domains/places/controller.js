@@ -45,14 +45,19 @@ const addPlace = async (req, res, next) => {
 
 const getAllPlacesByCityAndType = async (req, res, next) => {
   try {
-    const { city, type } = req.query
+    const { city, type, budget } = req.query
 
     validatePlaceType(type)
 
-    const places = await PlaceModel.find({
+    // FIXME: Filtering by budget doesn't work perfectly. Needs to be investigated.
+    const filters = {
       'properties.types': type,
       'properties.vicinity': city
-    }).exec()
+    }
+    if (budget !== 5) {
+      filters['properties.price_level'] = budget
+    }
+    const places = await PlaceModel.find(filters).exec()
 
     if (places.length > 0) {
       res.status(200).json({ updated: false, matches: places })
