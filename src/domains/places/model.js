@@ -74,7 +74,7 @@ const placeSchema = new mongoose.Schema({
     types: { type: [String], required: true },
     website: String,
     user_ratings_total: Number,
-    vicinity: { type: String, required: true },
+    vicinity: { type: String },
     wheelchair_accessible_entrance: Boolean
   },
   expiry_time: { type: Date, required: true }
