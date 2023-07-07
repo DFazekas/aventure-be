@@ -437,3 +437,81 @@ POST /places
   ]
 }
 ```
+
+### `GET /categories`
+
+Retrieves a list of all categories.
+
+#### **Request:**
+
+```
+GET /categories
+```
+
+#### **Response:**
+
+```json
+[
+  "beach",
+  "night club",
+  "biking",
+  "attractions",
+  "basketball",
+  "museum",
+  "Swimming",
+  "live music",
+  "restaurant",
+  "cafe",
+  "tennis",
+  "baseball",
+  "cricket",
+  "football",
+  "golf",
+  "hockey",
+  "volleyball",
+  "sailing",
+  "bar"
+]
+```
+
+### `POST /categories`
+
+Creates a list of categories.
+
+#### **Request:**
+
+```
+GET /categories
+```
+
+Body:
+
+```json
+[{ "label": "beach" }, { "label": "night club" }]
+```
+
+#### **Response:**
+
+```json
+[
+  "beach",
+  "night club",
+  "biking",
+  "attractions",
+  "basketball",
+  "museum",
+  "Swimming",
+  "live music",
+  "restaurant",
+  "cafe",
+  "tennis",
+  "baseball",
+  "cricket",
+  "football",
+  "golf",
+  "hockey",
+  "volleyball",
+  "sailing",
+  "bar"
+]
+```
