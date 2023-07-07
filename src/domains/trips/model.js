@@ -56,9 +56,11 @@ const tripSchema = new Schema({
     weather: { type: [String] }, // sunny, rainy, snowy, cloudy, windy, stormy, foggy, clear, hot, cold, warm, cool
     temperature: { type: String }, // degrees celcius
     time_of_day: { type: [String] },
-    season: { type: String } // spring, summer, autumn, winter
+    season: { type: String }, // spring, summer, autumn, winter
+    cover_image_url: { type: String }
   },
-  itinerary: { type: [itinerarySchema], required: true }
+  itinerary: { type: [itinerarySchema], required: true },
+  description: { type: String, required: true }
 })
 
 const TripModel = mongoose.model('Trip', tripSchema)
