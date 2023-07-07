@@ -1,3 +1,4 @@
+const morgan = require('morgan')
 require('./config/db')
 
 const routes = require('./routes')
@@ -5,6 +6,8 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = require('express')()
 
+// Log all HTTP requests
+app.use(morgan('dev'))
 // Parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: false }))
 // Parse JSON bodies
