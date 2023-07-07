@@ -42,13 +42,24 @@ const createTrip = async (req, res, next) => {
 }
 
 const getTrips = async (req, res, next) => {
+  let queryOptions = {}
   try {
-    const { type } = req.query
-    const trips = await TripModel.find({
-      'metadata.tags': type
-    })
+    const categories = req.query.categories
+    if (categories.length > 0) {
+      queryOptions = {
+        'metadata.tags': { $all: categories.split(',') }
+      }
+    }
+
+    console.log(`categories:`, categories.split(','))
+    const trips = await TripModel.find(queryOptions, '-_id -__v')
       .limit(10)
       .exec()
+
+    if (trips.length === 0) {
+      res.status(404).json({ message: 'No trips found' })
+      return
+    }
     res.status(200).json(trips)
   } catch (error) {
     next(error)

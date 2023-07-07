@@ -10,12 +10,13 @@ The base URL for all requests is `https://localhost:8082`.
 
 ### `GET /trips`
 
-Retrieves a list of all trips.
+Retrieves a list of all trips by categories (comma separated).
+NOTE: Whitespace is not allowed; replace with `%20`.
 
 #### **Request:**
 
 ```
-GET /trips
+GET /trips?categories=cafe,live%20music
 ```
 
 #### **Response:**
