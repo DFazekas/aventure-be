@@ -1,10 +1,14 @@
+# Hosted
+
+[Render](https://dashboard.render.com/web/srv-cjojupthe99c73dl8ipg)
+
 # API Documentation
 
 This document provides an overview of the available endpoints and their usage in the API.
 
 ## Base URL
 
-The base URL for all requests is `https://localhost:8082`.
+The base URL for all requests is `https://aventure-be.onrender.com`.
 
 ## Endpoints
 
