@@ -59,8 +59,7 @@ const adventureSchema = new Schema({
     season: { type: String }, // spring, summer, autumn, winter
     cover_image_url: { type: String }
   },
-  itinerary: { type: [itinerarySchema], required: true },
-  description: { type: String, required: true }
+  itinerary: { type: [itinerarySchema], required: true }
 })
 
 const AdventureModel = mongoose.model('Adventure', adventureSchema)
