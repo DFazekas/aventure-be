@@ -12,15 +12,15 @@ The base URL for all requests is `https://aventure-be.onrender.com`.
 
 ## Endpoints
 
-### `GET /trips`
+### `GET /adventures`
 
-Retrieves a list of all trips by categories (comma separated).
+Retrieves a list of all adventures by categories (comma separated).
 NOTE: Whitespace is not allowed; replace with `%20`.
 
 #### **Request:**
 
 ```
-GET /trips?categories=cafe,live%20music
+GET /adventures?categories=cafe,live%20music
 ```
 
 #### **Response:**
@@ -109,14 +109,14 @@ GET /trips?categories=cafe,live%20music
 ]
 ```
 
-### `POST /trips`
+### `POST /adventure`
 
-Creates as single trip.
+Creates as single adventure.
 
 #### **Request:**
 
 ```
-POST /trips
+POST /adventures
 ```
 
 Body:

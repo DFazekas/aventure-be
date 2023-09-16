@@ -36,7 +36,7 @@ const coordinateSchema = new Schema({
   lng: { type: Number }
 })
 
-const tripSchema = new Schema({
+const adventureSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String },
   duration: { type: durationSchema, required: true },
@@ -63,7 +63,7 @@ const tripSchema = new Schema({
   description: { type: String, required: true }
 })
 
-const TripModel = mongoose.model('Trip', tripSchema)
+const AdventureModel = mongoose.model('Adventure', adventureSchema)
 const ActivityModel = mongoose.model('Activity', activitySchema)
 const TravelModel = ActivityModel.discriminator(
   'Travel',
@@ -88,4 +88,4 @@ const PlaceModel = ActivityModel.discriminator(
   })
 )
 
-module.exports = { TripModel, PlaceModel, TravelModel }
+module.exports = { AdventureModel, PlaceModel, TravelModel }

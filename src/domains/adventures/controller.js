@@ -1,11 +1,11 @@
-const { TripModel, PlaceModel, TravelModel } = require('./model')
+const { AdventureModel, PlaceModel, TravelModel } = require('./model')
 
-const createTrip = async (req, res, next) => {
+const createAdventure = async (req, res, next) => {
   try {
     const data = req.body
 
-    const tripDuration = req.body.duration
-    tripDuration.formatted_duration = '15 mins' //FIXME - calculate this.
+    const adventureDuration = req.body.duration
+    adventureDuration.formatted_duration = '15 mins' //FIXME - calculate this.
 
     const itinerary = Object.keys(req.body.itinerary).map((date) => {
       const activities = data.itinerary[date].map((activity) => {
@@ -32,16 +32,16 @@ const createTrip = async (req, res, next) => {
       return { date, activities }
     })
 
-    const trip = new TripModel({ ...data, itinerary })
+    const adventure = new AdventureModel({ ...data, itinerary })
 
-    await trip.save()
-    res.status(201).json(trip)
+    await adventure.save()
+    res.status(201).json(adventure)
   } catch (error) {
     next(error)
   }
 }
 
-const getTrips = async (req, res, next) => {
+const getAdventures = async (req, res, next) => {
   let queryOptions = {}
   try {
     const categories = req.query.categories
@@ -52,18 +52,21 @@ const getTrips = async (req, res, next) => {
     }
 
     console.log(`categories:`, categories.split(','))
-    const trips = await TripModel.find(queryOptions, '-_id -__v')
+    const adventures = await AdventureModel.find(queryOptions, '-_id -__v')
       .limit(10)
       .exec()
 
-    if (trips.length === 0) {
-      res.status(404).json({ message: 'No trips found' })
+    if (adventures.length === 0) {
+      res.status(404).json({ message: 'No adventures found' })
       return
     }
-    res.status(200).json(trips)
+    res.status(200).json(adventures)
   } catch (error) {
     next(error)
   }
 }
 
-module.exports = { createTrip, getTrips }
+module.exports = {
+  createAdventure,
+  getAdventures
+}
