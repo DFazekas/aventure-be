@@ -12,111 +12,73 @@ The base URL for all requests is `https://aventure-be.onrender.com`.
 
 ## Endpoints
 
-### `GET /trips`
+### `GET /adventures`
 
-Retrieves a list of all trips by categories (comma separated).
-NOTE: Whitespace is not allowed; replace with `%20`.
+Retrieves a list of adventures created by or shared with the user, sorted by creation date (newest to oldest).
 
 #### **Request:**
 
 ```
-GET /trips?categories=cafe,live%20music
+GET /adventures
 ```
+
+**Parameters:**
+
+- `state` (string, required): Filter adventures by state. Only accepts "active" or "inactive".
+- `page` (integer, optional, default: 1): Page number for pagination.
+- `limit` (integer, optional, default: 20, max: 50): Number of adventures to return per page.
 
 #### **Response:**
 
 ```json
-[
-  {
-    "metadata": {
-      "city": "Grimsby",
-      "country": "Canada",
-      "travel_methods": ["Uber"],
-      "party_sizes": {
-        "min": 2,
-        "max": 4
+{
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 1
+  },
+  "adventures": [
+    {
+      "id": "649241ce81710af654d9e657",
+      "title": "Beach Day",
+      "state": "active",
+      "location": {
+        "city": "Grimsby",
+        "province": "Ontario",
+        "country": "Canada"
       },
-      "budget_dollars": 100,
-      "tags": ["Beach"],
-      "weather": ["Sunny", "Clear"],
-      "temperature": "Hot",
-      "time_of_day": ["Afternoon"],
-      "season": "Summer"
-    },
-    "_id": "649241ce81710af654d9e657",
-    "name": "Beach Day",
-    "duration": {
-      "start": "2023-07-20T01:03:08.814Z",
-      "end": "2023-07-20T01:03:08.814Z",
-      "formatted_duration": "15 mins"
-    },
-    "itinerary": [
-      {
-        "date": "2023-07-20T00:00:00.000Z",
-        "activities": [
-          {
-            "type": "Travel",
-            "notes": "Get Uber-X",
-            "duration": {
-              "start": "2023-07-20T05:03:08.814Z",
-              "end": "2023-07-20T05:03:08.814Z",
-              "formatted_duration": "15 mins"
-            },
-            "party_size": 3,
-            "cost_dollar": 25,
-            "travel_method": "Uber",
-            "path": {
-              "distance_km": 25,
-              "origin": {
-                "lat": 1230.123,
-                "lng": 123.123,
-                "_id": "649241ce81710af654d9e654"
-              },
-              "destination": {
-                "lat": 1230.123,
-                "lng": 123.123,
-                "_id": "649241ce81710af654d9e655"
-              }
-            },
-            "_id": "649241ce81710af654d9e653"
-          }
-        ],
-        "_id": "649241ce81710af654d9e658"
+      "dates": {
+        "start": "2023-07-20T00:00:00.000Z",
+        "end": "2023-07-22T00:00:00.000Z",
+        "total_days": 2,
+        "formatted_duration": "2 days"
       },
-      {
-        "date": "2023-07-21T00:00:00.000Z",
-        "activities": [
-          {
-            "type": "Place",
-            "notes": "Sarah will meet us there",
-            "duration": {
-              "start": "2023-07-20T01:03:08.814Z",
-              "end": "2023-07-20T01:03:08.814Z",
-              "formatted_duration": "15 mins"
-            },
-            "party_size": 3,
-            "cost_dollar": 25,
-            "place_type": "Beach",
-            "place_id": "123abc",
-            "_id": "649241ce81710af654d9e656"
-          }
-        ],
-        "_id": "649241ce81710af654d9e659"
-      }
-    ],
-    "__v": 0
-  }
-]
+      "collaborators": [
+        {
+          "user_id": "user234",
+          "username": "Joe Smith",
+          "image_url": "https://example.com/photo1.jpg"
+        }
+      ],
+      "created_by": {
+        "user_id": "user234",
+        "username": "Joe Smith",
+        "image_url": "https://example.com/photo1.jpg"
+      },
+      "created_at": "2023-07-20T01:03:08.814Z"
+    }
+  ]
+}
 ```
 
-### `POST /trips`
+### `POST /adventure`
 
-Creates as single trip.
+Creates as single adventure.
 
 #### **Request:**
 
 ```
-POST /trips
+POST /adventures
 ```
 
 Body:

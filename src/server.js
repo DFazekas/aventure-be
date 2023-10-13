@@ -18,4 +18,9 @@ app.use(cors({ origin: true, credentials: true }))
 app.get('/', (req, res) => res.send('Hello World!'))
 app.use(routes)
 
+// Error handling middleware should be added here
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).json({ error: err.message })
+})
+
 module.exports = app
